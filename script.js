@@ -55,4 +55,47 @@ document.querySelectorAll('.row-body > *, .footer-grid > *').forEach((el) => {
   revealObserver.observe(el);
 });
 
+// Referentieprojecten uit de Bruinsma-feed (assets/data/projecten.json, dagelijks bijgewerkt)
+const refGrid = document.getElementById('ref-grid');
+const dateFormat = new Intl.DateTimeFormat('nl-NL', { month: 'long', year: 'numeric' });
+const isWebUrl = (url) => /^https?:\/\//.test(url || '');
+const el = (tag, className, text) => {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text) node.textContent = text;
+  return node;
+};
+
+fetch('assets/data/projecten.json', { cache: 'no-cache' })
+  .then((res) => (res.ok ? res.json() : []))
+  .then((projects) => {
+    projects.filter((p) => p.title && isWebUrl(p.link)).forEach((p) => {
+      const link = el('a');
+      link.href = p.link;
+      link.target = '_blank';
+      link.rel = 'noopener';
+
+      const thumb = el('div', 'ref-thumb');
+      if (isWebUrl(p.image)) {
+        const img = el('img');
+        img.src = p.image;
+        img.alt = '';
+        img.loading = 'lazy';
+        img.addEventListener('error', () => img.remove());
+        thumb.append(img);
+      }
+
+      const body = el('div', 'ref-body');
+      if (p.date) body.append(el('span', 'ref-date', dateFormat.format(new Date(p.date))));
+      body.append(el('h4', '', p.title));
+      if (p.excerpt) body.append(el('p', '', p.excerpt));
+
+      link.append(thumb, body);
+      const item = el('li', 'ref-item');
+      item.append(link);
+      refGrid.append(item);
+    });
+  })
+  .catch(() => {});
+
 document.getElementById('year').textContent = new Date().getFullYear();

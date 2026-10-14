@@ -398,21 +398,51 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 }
 
 /* Referentieprojecten */
+.refs {
+  margin-top: 72px;
+  border-radius: 20px;
+  background: var(--blue-soft);
+}
 .ref-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 32px;
-  margin-top: 72px;
   padding: clamp(24px, 4vw, 40px);
-  border-radius: 20px;
-  background: var(--blue-soft);
   text-decoration: none;
-  transition: transform .25s;
 }
-.ref-card:hover { transform: translateY(-3px); }
 .ref-card:hover .arrow { transform: rotate(-45deg); }
 .ref-kicker { font-family: var(--mono); font-size: 12px; color: var(--blue); text-transform: uppercase; letter-spacing: .08em; }
 .ref-card h3 { font-size: clamp(22px, 2.4vw, 28px); margin-top: 8px; }
 .ref-card p { color: var(--ink-2); margin-top: 10px; max-width: 58ch; }
+
+.ref-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 14px;
+  padding: 0 clamp(24px, 4vw, 40px) clamp(24px, 4vw, 40px);
+}
+.ref-grid:empty { display: none; }
+.ref-item a {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--surface);
+  text-decoration: none;
+  transition: transform .25s, box-shadow .25s;
+}
+.ref-item a:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(10, 20, 80, .12); }
+.ref-thumb {
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, var(--blue), var(--blue-deep));
+  overflow: hidden;
+}
+.ref-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+.ref-item a:hover .ref-thumb img { transform: scale(1.04); }
+.ref-body { padding: 16px 18px 18px; display: grid; gap: 6px; }
+.ref-date { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.ref-body h4 { margin: 0; font-size: 17px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 600; }
+.ref-body p { font-size: 14px; color: var(--muted); line-height: 1.5; }
 @media (max-width: 860px) { .ref-card { flex-direction: column; align-items: flex-start; } }
