@@ -75,22 +75,14 @@ fetch('assets/data/projecten.json', { cache: 'no-cache' })
       link.target = '_blank';
       link.rel = 'noopener';
 
-      const thumb = el('div', 'ref-thumb');
-      if (isWebUrl(p.image)) {
-        const img = el('img');
-        img.src = p.image;
-        img.alt = '';
-        img.loading = 'lazy';
-        img.addEventListener('error', () => img.remove());
-        thumb.append(img);
-      }
-
       const body = el('div', 'ref-body');
-      if (p.date) body.append(el('span', 'ref-date', dateFormat.format(new Date(p.date))));
+      const meta = [p.date && dateFormat.format(new Date(p.date)), (p.categories || [])[0]].filter(Boolean).join(' · ');
+      if (meta) body.append(el('span', 'ref-date', meta));
       body.append(el('h4', '', p.title));
       if (p.excerpt) body.append(el('p', '', p.excerpt));
+      body.append(el('span', 'ref-more', 'Bekijk project →'));
 
-      link.append(thumb, body);
+      link.append(body);
       const item = el('li', 'ref-item');
       item.append(link);
       refGrid.append(item);
