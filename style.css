@@ -209,7 +209,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 
 /* Over mij */
 .about { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 32px; color: var(--ink-2); }
-.stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; margin: 48px 0 0; border-top: 1px solid var(--line); }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin: 48px 0 0; border-top: 1px solid var(--line); }
 .stats div { padding: 24px 24px 0 0; }
 .stats div + div { padding-left: 24px; border-left: 1px solid var(--line); }
 .stats dt { font-size: clamp(36px, 4vw, 52px); font-weight: 600; letter-spacing: -0.04em; color: var(--blue); line-height: 1; }
