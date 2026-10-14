@@ -24,10 +24,7 @@ OUTPUT = Path(__file__).resolve().parent.parent / "assets" / "data" / "projecten
 MAX_ITEMS = 6
 EXCERPT_LENGTH = 180
 
-NS = {
-    "content": "http://purl.org/rss/1.0/modules/content/",
-    "media": "http://search.yahoo.com/mrss/",
-}
+NS = {"content": "http://purl.org/rss/1.0/modules/content/"}
 
 
 def fetch(url):
@@ -58,24 +55,6 @@ def safe_url(value):
     return value if value.startswith(("https://", "http://")) else ""
 
 
-def find_image(item):
-    for tag in ("media:content", "media:thumbnail"):
-        el = item.find(tag, NS)
-        if el is not None and safe_url(el.get("url")):
-            return el.get("url")
-    enclosure = item.find("enclosure")
-    if enclosure is not None and (enclosure.get("type") or "").startswith("image/"):
-        if safe_url(enclosure.get("url")):
-            return enclosure.get("url")
-    for tag in ("content:encoded", "description"):
-        el = item.find(tag, NS)
-        if el is not None and el.text:
-            match = re.search(r"<img[^>]+src=[\"']([^\"']+)[\"']", el.text, re.I)
-            if match and safe_url(html.unescape(match.group(1))):
-                return html.unescape(match.group(1))
-    return ""
-
-
 def parse(xml_bytes):
     root = ET.fromstring(xml_bytes)
     projects = []
@@ -98,7 +77,6 @@ def parse(xml_bytes):
             "link": link,
             "date": date,
             "excerpt": excerpt(summary),
-            "image": find_image(item),
             "categories": [strip_html(c.text) for c in item.findall("category") if c.text][:3],
         })
         if len(projects) >= MAX_ITEMS:
